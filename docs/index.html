@@ -1,25 +1,540 @@
 <!DOCTYPE html>
-<html lang="zh"><head>
+<html lang="zh">
+<head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex">
-<meta http-equiv="refresh" content="60">
-<title>爆款雷达 · 还在加载</title>
+<title>confinement care</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-  body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
-       background:#0a0d13;color:#e8e8ea;text-align:center;padding:24px;
-       font-family:"PingFang SC","Microsoft YaHei",system-ui,sans-serif}
-  .spin{width:34px;height:34px;margin:0 auto 26px;border:3px solid #2a2f3a;
-        border-top-color:#ff785a;border-radius:50%;animation:s 1s linear infinite}
-  @keyframes s{to{transform:rotate(360deg)}}
-  h1{font-size:23px;margin:0 0 14px;font-weight:600}
-  p{margin:8px 0;color:#9a9aa2;font-size:15px;line-height:1.75}
-  .hint{margin-top:30px;font-size:13.5px;color:#6e6e78}
-  @media(prefers-reduced-motion:reduce){.spin{animation:none}}
-</style></head><body><div>
-  <div class="spin"></div>
-  <h1>你的页面还在加载中,请稍等</h1>
-  <p>第一次大约需要 20-60 分钟。</p>
-  <p>这一页会自己刷新,你可以先去忙别的。</p>
-  <p class="hint">等很久都没变?回到安装 SOP 第 7 步,<br>到仓库的 Actions 看 Sync Content 有没有跑完。</p>
-</div></body></html>
+  :root {
+    --bg: #0a0d13;
+    --card: #11151d;
+    --card-hi: #151a24;
+    --border: #1d2430;
+    --border-hi: #2c3546;
+    --text: #e8ecf3;
+    --muted: #8a94a6;
+    --faint: #5b6577;
+    --accent: #5ea1ff;
+    --green: #3fd68f;
+    --orange: #f0a33f;
+    --pink: #ff6b9d;
+    --red: #ff5c5c;
+    --fire1: #ff8a3d;
+    --fire2: #ff4d6d;
+    --font: 'Inter', -apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    --disp: 'Space Grotesk', 'Inter', -apple-system, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scrollbar-color: #232c3b var(--bg); }
+  body { background: var(--bg); color: var(--text); font-family: var(--font);
+    -webkit-font-smoothing: antialiased; }
+  ::selection { background: rgba(94,161,255,.3); }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: #232c3b; border-radius: 8px; }
+  ::-webkit-scrollbar-thumb:hover { background: #2c3546; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+
+  .ic { width: 14px; height: 14px; stroke: currentColor; stroke-width: 2;
+    stroke-linecap: round; stroke-linejoin: round; fill: none; flex: none; }
+
+  header { position: sticky; top: 0; z-index: 50; background: rgba(10,13,19,.86);
+    backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border); padding: 13px 20px 12px; }
+  .hrow { display: flex; flex-wrap: wrap; gap: 9px; align-items: center; max-width: 1440px; margin: 0 auto; }
+  .brand { display: flex; align-items: center; gap: 10px; margin-right: auto; }
+  .mark { width: 31px; height: 31px; border-radius: 9px; display: grid; place-items: center;
+    background: linear-gradient(135deg, var(--fire1), var(--fire2));
+    box-shadow: 0 4px 16px rgba(255,92,80,.35); }
+  .mark .ic { width: 17px; height: 17px; color: #fff; }
+  h1 { font-family: var(--disp); font-size: 16.5px; font-weight: 700; letter-spacing: .2px; white-space: nowrap; line-height: 1.15; }
+  h1 small { display: block; color: var(--faint); font-family: var(--font); font-weight: 400;
+    font-size: 10.5px; letter-spacing: 0; }
+
+  .search { position: relative; }
+  .search > .ic { position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
+    color: var(--faint); width: 13.5px; pointer-events: none; }
+  input#fSearch { background: var(--card); color: var(--text); border: 1px solid var(--border);
+    border-radius: 10px; padding: 8px 12px 8px 32px; font-size: 13px; font-family: var(--font);
+    width: 200px; transition: border-color .18s, background .18s; }
+  input#fSearch:hover { border-color: var(--border-hi); }
+  input#fSearch:focus { border-color: var(--accent); outline: none; }
+  input#fSearch::placeholder { color: var(--faint); }
+
+  select, .btn { background: var(--card); color: var(--text); border: 1px solid var(--border);
+    border-radius: 10px; padding: 8px 11px; font-size: 13px; font-family: var(--font);
+    cursor: pointer; transition: border-color .18s, background .18s, color .18s;
+    display: inline-flex; align-items: center; gap: 6px; }
+  select:hover, .btn:hover { border-color: var(--border-hi); background: var(--card-hi); }
+  .btn:active { transform: scale(.97); }
+  .btn.on { border-color: var(--accent); color: var(--accent); background: rgba(94,161,255,.08); }
+
+  .tabs { display: flex; gap: 7px; flex-wrap: wrap; max-width: 1440px; margin: 12px auto 0; }
+  .tab { display: inline-flex; align-items: center; gap: 7px; background: var(--card);
+    border: 1px solid var(--border); border-radius: 999px; padding: 6.5px 14px;
+    font-size: 13px; color: var(--muted); cursor: pointer; user-select: none;
+    transition: border-color .18s, background .18s, color .18s, transform .18s; }
+  .tab:hover { border-color: var(--border-hi); color: var(--text); }
+  .tab .cnt { font-family: var(--disp); font-weight: 600; font-size: 11px;
+    background: rgba(255,255,255,.06); padding: 1.5px 7.5px; border-radius: 99px;
+    font-variant-numeric: tabular-nums; }
+  .tab.on { color: var(--text);
+    background: linear-gradient(135deg, rgba(255,138,61,.15), rgba(255,77,109,.15));
+    border-color: rgba(255,120,90,.45); }
+  .tab.on .cnt { background: rgba(255,120,90,.25); }
+  body.dragging .tab.droppable { border-style: dashed; border-color: var(--accent); }
+  .tab.over { background: rgba(94,161,255,.22); color: var(--text); transform: scale(1.07); }
+
+  .chips { display: flex; gap: 6px; flex-wrap: wrap; max-width: 1440px; margin: 9px auto 0; align-items: center; }
+  .chips .lbl { font-size: 12px; color: var(--faint); margin-right: 2px; }
+  .chip2 { display: inline-flex; align-items: center; gap: 5.5px; background: var(--card);
+    border: 1px solid var(--border); border-radius: 999px; padding: 4.5px 12px;
+    font-size: 12px; color: var(--muted); cursor: pointer; user-select: none;
+    transition: border-color .18s, color .18s, background .18s;
+    font-variant-numeric: tabular-nums; }
+  .chip2 .ic { width: 12.5px; height: 12.5px; }
+  .chip2:hover { border-color: var(--border-hi); color: var(--text); }
+  .chip2.on { border-color: rgba(240,163,63,.6); color: var(--orange); background: rgba(240,163,63,.08); }
+
+  main { max-width: 1440px; margin: 22px auto; padding: 0 20px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(305px, 1fr)); gap: 18px; }
+
+  .card { position: relative; background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; overflow: hidden; display: flex; flex-direction: column;
+    transition: transform .22s cubic-bezier(.2,.7,.3,1), border-color .22s, box-shadow .22s;
+    animation: fadeUp .45s cubic-bezier(.2,.7,.3,1) both; }
+  .card:hover { transform: translateY(-3px); border-color: var(--border-hi);
+    box-shadow: 0 12px 32px rgba(0,0,0,.45); }
+  .card.outlier::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: linear-gradient(90deg, var(--fire1), var(--fire2)); z-index: 2; }
+  .card[draggable] { cursor: grab; }
+  .card.lifting { opacity: .45; }
+  .card.saved { border-color: var(--green); }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+  .embed { position: relative; width: 100%; aspect-ratio: 4/5; background: #080b10; }
+  .embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .embed .ph { position: absolute; inset: 0; display: grid; place-items: center;
+    background: linear-gradient(110deg, #0b0e15 8%, #121826 18%, #0b0e15 33%);
+    background-size: 200% 100%; animation: shimmer 1.5s linear infinite; }
+  .embed .ph .ic { width: 30px; height: 30px; color: #2a3342; stroke-width: 1.6; }
+  @keyframes shimmer { to { background-position-x: -200%; } }
+
+  .meta { padding: 13px 15px 14px; display: flex; flex-direction: column; gap: 9px; }
+  .row1 { display: flex; align-items: center; gap: 7px; font-size: 13px; flex-wrap: wrap; }
+  .handle { color: #3a4456; cursor: grab; display: inline-flex; }
+  .handle .ic { width: 13px; height: 13px; }
+  .who { font-weight: 600; color: var(--accent); text-decoration: none; }
+  .who:hover { text-decoration: underline; }
+  .badge { display: inline-flex; align-items: center; gap: 4px; font-size: 10.5px; font-weight: 500;
+    padding: 2.5px 8px; border-radius: 999px; border: 1px solid var(--border); color: var(--muted); }
+  .badge .ic { width: 10.5px; height: 10.5px; }
+  .badge.bnew { color: var(--pink); border-color: rgba(255,107,157,.45); background: rgba(255,107,157,.07); }
+  .badge.bhorse { color: var(--orange); border-color: rgba(240,163,63,.45); background: rgba(240,163,63,.07); }
+  .badge.bbait { color: var(--accent); border-color: rgba(94,161,255,.4); background: rgba(94,161,255,.07); }
+  .date { margin-left: auto; color: var(--faint); font-size: 11px; font-variant-numeric: tabular-nums; }
+
+  .nums { display: flex; gap: 6px; flex-wrap: wrap; }
+  .num { display: inline-flex; align-items: center; gap: 5px; background: #0c0f16;
+    border: 1px solid var(--border); border-radius: 9px; padding: 5px 9px;
+    font-size: 11px; color: var(--muted); }
+  .num .ic { width: 11.5px; height: 11.5px; }
+  .num b { font-family: var(--disp); color: var(--text); font-size: 12.5px; font-weight: 600;
+    font-variant-numeric: tabular-nums; }
+  .num.hot { border-color: rgba(255,122,77,.35); }
+  .num.hot .ic, .num.hot b { color: #ff7a4d; }
+  .num.x { border-color: rgba(240,163,63,.35); }
+  .num.x .ic, .num.x b { color: var(--orange); }
+  .num.er .ic, .num.er b { color: var(--green); }
+
+  .cap { color: var(--muted); font-size: 12.5px; line-height: 1.55; display: -webkit-box;
+    -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; cursor: pointer; }
+  .cap.open { -webkit-line-clamp: unset; }
+  .cap b { color: var(--text); font-weight: 600; }
+  .ai { border-left: 2px solid var(--orange); background: rgba(240,163,63,.06);
+    padding: 8px 11px; border-radius: 0 10px 10px 0; font-size: 12px; line-height: 1.65;
+    color: var(--muted); }
+  .ai b { color: var(--orange); font-weight: 600; }
+  .mine { border-left: 2px solid var(--green); background: rgba(63,214,143,.06);
+    padding: 8px 11px; border-radius: 0 10px 10px 0; font-size: 12px; line-height: 1.65;
+    color: var(--muted); cursor: pointer; display: -webkit-box; -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical; overflow: hidden; white-space: pre-wrap; }
+  .mine.open { -webkit-line-clamp: unset; }
+  .mine b { color: var(--green); font-weight: 600; }
+
+  .srow { display: flex; align-items: center; gap: 7px; }
+  .srow label { font-size: 12px; color: var(--faint); }
+  .status { flex: 1; padding: 6px 9px; font-size: 12.5px; }
+  .status.s未处理 { color: var(--muted); }
+  .status.s拍摄中 { color: var(--orange); border-color: rgba(240,163,63,.5); }
+  .status.s已处理 { color: var(--green); border-color: rgba(63,214,143,.5); }
+  .status.s跳过 { color: var(--red); border-color: rgba(255,92,92,.5); }
+  .abtn { display: inline-flex; align-items: center; gap: 5px; background: #0c0f16;
+    color: var(--muted); border: 1px solid var(--border); border-radius: 9px;
+    padding: 6px 10px; font-size: 11.5px; font-family: var(--font); cursor: pointer;
+    text-decoration: none; transition: color .18s, border-color .18s, transform .1s; }
+  .abtn .ic { width: 12px; height: 12px; }
+  .abtn:hover { color: var(--accent); border-color: rgba(94,161,255,.5); }
+  .abtn:active { transform: scale(.95); }
+
+  .more { text-align: center; margin: 28px 0 44px; }
+  .more button { background: var(--card); color: var(--accent); border: 1px solid var(--border);
+    border-radius: 12px; padding: 11px 30px; font-size: 14px; font-family: var(--font);
+    cursor: pointer; transition: border-color .18s, background .18s; }
+  .more button:hover { border-color: var(--border-hi); background: var(--card-hi); }
+
+  .empty { color: var(--faint); text-align: center; padding: 70px 0; display: flex;
+    flex-direction: column; align-items: center; gap: 12px; font-size: 14px; }
+  .empty .ic { width: 34px; height: 34px; stroke-width: 1.5; color: #2c3546; }
+
+  footer { color: var(--faint); font-size: 11px; text-align: center; padding: 22px; }
+
+  #toast { position: fixed; bottom: 26px; left: 50%; transform: translateX(-50%) translateY(8px);
+    background: var(--card-hi); border: 1px solid var(--border-hi); border-radius: 11px;
+    padding: 11px 20px; font-size: 13px; display: none; z-index: 99; opacity: 0;
+    box-shadow: 0 12px 32px rgba(0,0,0,.5); transition: opacity .2s, transform .2s; }
+  #toast.show { display: block; opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+<svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+  <symbol id="i-flame" viewBox="0 0 24 24"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></symbol>
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.29 1.51 4.04 3 5.5l7 7Z"/></symbol>
+  <symbol id="i-msg" viewBox="0 0 24 24"><path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/></symbol>
+  <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+  <symbol id="i-trend" viewBox="0 0 24 24"><path d="M22 7l-8.5 8.5-5-5L2 17"/><path d="M16 7h6v6"/></symbol>
+  <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></symbol>
+  <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2l2.9 6.9 7.1.6-5.4 4.7 1.6 7-6.2-3.7-6.2 3.7 1.6-7L2 9.5l7.1-.6z"/></symbol>
+  <symbol id="i-magnet" viewBox="0 0 24 24"><path d="m6 15-4-4 6.75-6.77a7.79 7.79 0 0 1 11 11L13 22l-4-4 6.39-6.36a2.14 2.14 0 0 0-3-3L6 15"/><path d="m5 8 4 4"/><path d="m12 15 4 4"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+  <symbol id="i-clip" viewBox="0 0 24 24"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 12h6"/><path d="M9 16h6"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24"><path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></symbol>
+  <symbol id="i-key" viewBox="0 0 24 24"><circle cx="7.5" cy="15.5" r="5.5"/><path d="m21 2-9.6 9.6"/><path d="m15.5 7.5 3 3L22 7l-3-3"/></symbol>
+  <symbol id="i-video" viewBox="0 0 24 24"><path d="m10 8 6 4-6 4Z"/><rect x="2" y="4" width="20" height="16" rx="3"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-5-5L5 21"/></symbol>
+  <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="m2 17 10 5 10-5"/><path d="m2 12 10 5 10-5"/></symbol>
+  <symbol id="i-grip" viewBox="0 0 24 24"><circle cx="9" cy="5" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="9" cy="19" r="1"/><circle cx="15" cy="5" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="15" cy="19" r="1"/></symbol>
+  <symbol id="i-pct" viewBox="0 0 24 24"><path d="M19 5 5 19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/></symbol>
+  <symbol id="i-mic" viewBox="0 0 24 24"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><path d="M12 19v3"/></symbol>
+</svg>
+<header>
+  <div class="hrow">
+    <div class="brand">
+      <div class="mark"><svg class="ic"><use href="#i-flame"/></svg></div>
+      <h1>confinement care<small id="updated"></small></h1>
+    </div>
+    <div class="search"><svg class="ic"><use href="#i-search"/></svg>
+      <input id="fSearch" placeholder="搜文案 / hashtag / 账号"></div>
+    <select id="fTracker"><option value="">全部 Tracker</option></select>
+    <select id="fComp"><option value="">全部 Competitor</option></select>
+    <select id="fSort">
+      <option value="x">按 爆款倍数 (vs 自家平均)</option>
+      <option value="score">按 Viral Score</option>
+      <option value="er">按 Engagement Rate</option>
+      <option value="comments">按 Comments</option>
+      <option value="likes">按 Likes</option>
+      <option value="date">按 最新日期</option>
+    </select>
+    <button class="btn" id="fVideo"><svg class="ic"><use href="#i-video"/></svg>只看视频</button>
+
+    <a class="btn" href="team.html" target="_top" title="工作台"><svg class="ic"><use href="#i-users"/></svg>工作台</a>
+  </div>
+  <div class="tabs" id="tabs"></div>
+  <div class="chips" id="presets"></div>
+  <div class="chips" id="trends"></div>
+</header>
+<main>
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty" style="display:none"><svg class="ic"><use href="#i-search"/></svg>没有符合条件的帖子</div>
+  <div class="more" id="moreWrap" style="display:none"><button id="moreBtn">载入更多</button></div>
+</main>
+<footer>数据来源 Supabase · 每周自动更新 · 状态更改即时同步全团队 · 视频由 Instagram 官方 embed 播放</footer>
+<div id="toast"></div>
+<script id="data" type="application/json">[{"id": "DdiWXhyEwmY", "tracker": "confinement care 竞对", "competitor": "esther_postpartumcare", "caption": "Many confinement centres describe themselves as professional, comprehensive and comfortable.\n \nBut when a mother is making a real decision, she needs more than adjectives. She needs facts she can verify for herself.\n \nFor 10 years in Malaysia, Esther has stayed true to one purpose:\nto give every mother a confinement journey worth remembering.\n \nOver the years, we have supported 5,000 mothers through their confinement journeys.\nEvery mother we care for and every piece of feedback we receive help us improve the way we serve families.\n \nWe believe professional care should never depend on one person having all the answers.\nMs Xu brings senior nursing and training experience from Chang Gung Children’s Hospital and Chang Gung Hospital. Vivian Yang is a Registered Nurse in Taiwan and co-authored an ISQua 2024 study on postpartum care.\nTheir different areas of experience help our team keep learning and give mothers access to the right support when different needs arise.\n \nA recovery space is m", "transcript": "", "brk": "Hook类型: 痛点直击\n结构: 戳破行业空洞承诺 → 给出10年数据背书 → 介绍专家与硬件实力\n为什么火: 用可验证的事实和资深专业背书打破信息差，建立高信任感\n改编角度: 强调月子中心拒绝虚假宣传，用台湾资深护理团队与真实数据直击新手妈妈对专业度的焦虑", "my": "安心坐月子真的安心吗？\n\n其实很多妈咪在找月子中心的时候，都觉得只要看广告上写得很好，或者房间看起来够大，就一定没有问题。\n\n但其实，接下来的28天，不只是坐月子，更是妈妈身体非常重要的休养与恢复期，真正要看的是实际的照顾。\n\n第一，老板娘温姐本人就住在中心里，可以亲自为你介绍哦，妈咪和先生随时都可以过来参观房间和宝宝护理环境。\n\n第二，这里有24小时的护士团队，三班轮流用心照顾妈妈的饮食与需要，如果有涨奶的情况护士也能及时疏通。\n\n第三，如果先生在新加坡做工不在身边，我们还提供载送服务，带妈妈和宝宝去KK检查，不用自己烦恼怎么出门。\n\n温姐，你跟老公两个人都在新加坡做工，然后你一个人回来这边坐月子，你为什么选择我们这间月子中心呢？\n【剪辑:这里放案例画面】\n我选择来月子中心的其中一个原因，是不想让家婆、家公这么累，而且首要原因也是因为老板娘温姐住在月子中心里面。\n\n以前在家里坐月子的时候，不仅家婆要煮给我吃还要照顾小孩，自己遇到涨奶或者宝宝要照顾的时候会觉得很无助。\n现在来到这里，有24小时的护士姐姐照顾baby，可以让二宝妈妈好好休息、恢复身体，想念宝宝发一通信息就会送到身边。\n\n想问问你之前收到我们的月子中心介绍，有没有什么想进一步了解的呢？\n欢迎妈咪和先生亲自过来参观，单人房RM9,980起，可以认识我们的护士团队，我本人也住在中心里，可以亲自为你介绍哦！", "tags": "EstherPostpartumCare, 伊诗特产后护理, KL月子中心, Cheras月子中心, Damansara月子中心, 吉隆坡月子中心, ConfinementCentreMalaysia, PostpartumCareMalaysia, 月子中心怎么选, 产后护理, 月子餐, 孕期功课, 坐月子", "bait": false, "type": "Carousel", "likes": 13, "comments": 1, "er": 0.43, "followers": 3281, "date": "2026-09-21", "url": "https://www.instagram.com/p/DdiWXhyEwmY/", "video": false, "ratio": 0, "score": 0.49, "status": "未处理", "x": 1.3}, {"id": "DeHCiQIHAzG", "tracker": "confinement care 竞对", "competitor": "esther_postpartumcare", "caption": "Many mothers experience bladder leakage after birth, yet find it hard to talk about.\n \nThis mother stayed with Esther for her first baby. Five years later, she came back for her second—mainly for postpartum recovery care.\n \nAs Ms Xu often reminds mothers: understanding your pelvic floor doesn’t have to wait until after birth. You can start learning during pregnancy.\n \nEvery mother’s body is different. If you have concerns, please consult a qualified healthcare professional.\n\n很多妈妈产后有漏尿的困扰，却不好意思跟人说，只是默默垫着。\n \n这位妈妈第一胎也在 Esther 坐月子。\n那一胎之后，漏尿一直是她放在心上的事；\n五年后第二胎，她说最主要是为了产康而回来。\n \n徐老师常提醒妈妈们：\n对盆底的认识，不要等生完才开始，孕期就可以先了解。\n \n每位妈妈的身体状况不同，如有不适，请咨询专业医护人员评估。\n\nWhatsApp ☎️ https://wa.link/ulhhj6\nEsther Postpartum Care | Damansara · Cheras\n\n#EstherPostpartumCare #伊诗特产后护理 #KL月子中心 #Cheras月子中心 #Damansara月子中心 #产后漏尿 #盆底健康 #产后恢复 #坐月子 #ConfinementCentreMalaysia #PostpartumCareMalaysia", "transcript": "最主要就是產康因為我第一胎的那個露尿比較嚴重所以我就來了Ester因為這件事情大家還是男與其時的尤其是女性當她有露尿的現象的時候她甚至都不敢跟誰說她甚至都只是電尿衛生巾她甚至都不知道其實露尿這件事情從她懷孕開始就應該去預防再加上產後如果不能夠提早的干預產後的損傷產後的損傷盆底的這些康復過程有預防的人可能到60歲還能夠有很好的一個盆底肌功能可是沒有這樣意識的人可能30歲甚至更早要看她身體太等等的她就開始有露尿的問題了所以盆底肌功能一定不是生完才開始干預產前就要需要有這樣的知識了所以我覺得產康是一個很重要的動作", "brk": "Hook类型: 痛点直击\n结构: 痛点揭秘(漏尿难言之隐) → 真实案例(二胎回访) → 专业建议(孕期开始预防)\n为什么火: 戳中产后妈妈羞于启齿的漏尿痛点，用真实回头客和专业科普建立信任。\n改编角度: 采访二胎返台妈妈，放大产后盆底肌修复的前后对比与心理转变。", "my": "「安心坐月子真的安心吗？」\n\n很多妈咪生完宝宝以后，面对身体上的一些变化，比如涨奶或者其他不舒服，其实都不好意思跟长辈说，只能自己默默忍耐。\n\n其实大家觉得，坐月子只要吃好睡好就行了，等出了月子自然就会好。\n\n但接下来的28天，不只是\"坐月子\"，更是妈妈身体非常重要的休养与恢复期。\n\n来到实兆远月子中心，我们希望妈妈可以放心把自己交给我们。\n\n第一点，老板娘亲自在中心。我本人也住在中心里，可以亲自为你介绍哦！\n\n第二点，24小时护士团队用心照顾妈妈的饮食与需要。有护士三班在，涨奶能及时疏通，我就没那么无助，很安心。\n\n第三点，我们提供很贴心的照顾。像单人房有双人床的配套是 RM9,980，还有 VIP 大套房 RM11,680，妈咪和先生都可以来看看房间和宝宝护理环境。\n\n就像我们第二胎的妈妈 Ruby 分享的，她选择这里的原因，是因为温姐住在月子中心里面，而且有护士姐姐三班轮班，让她这个二宝妈妈可以好好休息、恢复身体。\n\n以前在家里坐月子，不仅要担心自己不会处理涨奶，还要担心家人太累；\n现在来到这里，有24小时护士三班照顾宝宝，想念宝宝发一通信息就会送到身边。\n\n其实我们很欢迎妈咪和先生亲自过来参观，看看房间、宝宝护理环境，也可以认识我们的护士团队。\n\n想问问你之前收到我们的月子中心介绍，有没有什么想进一步了解的呢？", "tags": "EstherPostpartumCare, 伊诗特产后护理, KL月子中心, Cheras月子中心, Damansara月子中心, 产后漏尿, 盆底健康, 产后恢复, 坐月子, ConfinementCentreMalaysia, PostpartumCareMalaysia", "bait": false, "type": "Video", "likes": 12, "comments": 0, "er": 0.37, "followers": 3281, "date": "2026-10-05", "url": "https://www.instagram.com/p/DeHCiQIHAzG/", "video": true, "ratio": 0, "score": 0.37, "status": "未处理", "x": 1.0}, {"id": "DevZeG_k1fI", "tracker": "confinement care 竞对", "competitor": "esther_postpartumcare", "caption": "Day 100 is a milestone many Chinese families celebrate. Traditionally, it marks a baby's safe passage through the earliest days.\nThe 28 days of confinement are the first stretch of the road to day 100.\n\nDuring the confiement period, rest, a newborn being looked after, five meals a day, learning to care for a newborn, and time that belongs only to you.\n \nSave this, and look back on it on day 100.\n\n百晬，是宝宝出生后的第 100 天，华人家庭会为宝宝庆祝这个日子。\n传统上，百晬象征宝宝平安走过最初的日子。\n月子的 28 天，是通往百晬的最前面一段路。\n \n过程里的修复、看顾、一天五餐、照顾新生儿的练习，\n以及一段只属于你们的时光，百晬当天值得你再一次回顾。\n \nBook a centre tour 了解更多:\n☎️: https://wa.link/ulhhj6\nEsther Postpartum Care | Damansara · Cheras\n \n#EstherPostpartumCare #伊诗特产后护理 #KL月子中心 #Cheras月子中心 #Damansara月子中心 #百晬 #坐月子 #新生儿 #ConfinementCentreMalaysia #PostpartumCareMalaysia #产后护理", "transcript": "", "brk": "Hook类型: 身份共鸣\n结构: 文化节点切入 → 传统意义阐述 → 月子价值归纳 → 行动号召预约\n为什么火: 巧妙将华人重视的宝宝百日与月子护理挂钩，引发新手妈妈的长远情感共鸣。\n改编角度: 聚焦马来西亚华人家庭的百日宴传统，强调月子中心的专业照护是宝宝安稳度过百天的坚实基础。", "my": "安心坐月子真的安心吗？\n\n很多妈咪以为，坐月子就是随便在家里躺二十八天，家里长辈帮忙煮点东西吃，或者自己上网看影片学怎么带baby就可以了。\n\n其实不是，接下来的28天，不只是坐月子，更是妈妈身体非常重要的休养与恢复期。\n\n如果你想要好好休息，第一步，可以选择来到我们实兆远月子中心，我们的单人房是双人房配置，还有 RM9,980 的配套让你放心把自己交给我们。\n\n第二个方法，你不需要担心涨奶或者不知道怎么处理，因为我们有24小时的护士团队三班轮流照顾，涨奶能及时疏通，我就没那么无助，很安心。\n\n第三个方法，先生不在身边的时候也不用烦恼，我们有提供载送服务，可以载妈妈和带宝宝去KK检查，还有医生和营养师上门教你怎么帮baby排气和按摩。\n\n【剪辑:这里放案例画面】\n像我们的二宝妈妈 Ruby，她跟先生都在新加坡做工，自己一个人回来坐月子，她选择我们的首要原因，就是因为老板娘温姐住在中心里面，护士姐姐三班轮班让她可以好好休息，想念baby时发一通讯息就会送到身边。\n\n以前在家里坐月子，不仅自己很累，还要担心家婆要煮饭又要照顾小孩，弄得大家都非常辛苦。\n用对方法来到月子中心以后，不仅有24小时护士姐姐照顾baby，自己能真正好好休息恢复身体，食物也很好吃。\n\n其实我们很欢迎妈咪和先生亲自过来参观，看看房间和宝宝护理环境，也可以认识我们的护士团队。\n我本人也住在中心里，可以亲自为你介绍哦！\n\n想问问你之前收到我们的月子中心介绍，有没有什么想进一步了解的呢？", "tags": "EstherPostpartumCare, 伊诗特产后护理, KL月子中心, Cheras月子中心, Damansara月子中心, 百晬, 坐月子, 新生儿, ConfinementCentreMalaysia, PostpartumCareMalaysia, 产后护理", "bait": false, "type": "Carousel", "likes": 9, "comments": 0, "er": 0.27, "followers": 3281, "date": "2026-10-21", "url": "https://www.instagram.com/p/DevZeG_k1fI/", "video": false, "ratio": 0, "score": 0.27, "status": "未处理", "x": 0.7}, {"id": "DfCKx1JDc-L", "tracker": "confinement care 竞对", "competitor": "lycmotherchild", "caption": "🎶 Sounds of Our Kitchen: When Every Sound Tells a Story! 🍳💗\n\nIt reflects the love, care, and effort our chefs and kitchen team put into preparing delicious, nourishing meals for every mummy. 👩‍🍳💗\n\n What sounds can you hear in this video? Let us know in the comments below! 👇💕\n\n@toshiba_lifestyle_malaysia \n\n#Toshiba #confinement #ConfinementCare #confinementmeals #confinementcentre #confinementcentrekl #asmrvideo #asmr #asmrkitchen #月子中心 #沉浸式 #沉浸式厨房 #月子餐 #月子餐外卖 #坐月子 #坐月子餐外送 #厨房 #kitchen", "transcript": "", "brk": "Hook类型: 沉浸式感官体验\n结构: 厨房环境音展示 → 精致月子餐特写 → 传递用心与专业\n为什么火: 利用ASMR解压音效结合治愈画面，降低防御心并展现膳食高品质。\n改编角度: 突出“产后第一口滋补汤”的治愈音效与食材特写，强化专业月子餐诱惑。", "my": "「安心坐月子真的安心吗？」\n\n很多妈咪以为，坐月子就是随便吃点清淡的饭菜，忍一忍就过了。\n\n其实接下来的28天，不只是\"坐月子\"，更是妈妈身体非常重要的休养与恢复期。\n\n来到实兆远月子中心，我们希望妈妈可以放心把自己交给我们。\n\n第一，老板娘亲自在中心，我本人也住在中心里，可以亲自为你介绍哦！\n\n第二，24小时护士团队用心照顾妈妈的饮食与需要，有护士三班在，涨奶能及时疏通，我就没那么无助，很安心。\n\n第三，一天有5餐用心准备的月子餐，不仅好吃，还能让妈咪好好恢复身体。\n\nRuby是我们的二宝妈妈，她选择来月子中心的其中一个原因，是不想让家婆、家公这么累，而且这里的护士姐姐是三班轮班的，她可以好好休息，也不需要烦恼baby要自己照顾。\n\n以前在家里坐月子，不仅要担心长辈太累，遇到涨奶也只能自己硬扛，常常哭着不知道该怎么办。\n\n现在来到实兆远月子中心，有24小时护士团队帮忙照顾宝宝，还有我这个老板娘亲自在中心看着，妈咪真的可以好好休息。\n\n其实我们很欢迎妈咪和先生亲自过来参观，看看房间、宝宝护理环境，也可以认识我们的护士团队。\n\n想问问你之前收到我们的月子中心介绍，有没有什么想进一步了解的呢？", "tags": "Toshiba, confinement, ConfinementCare, confinementmeals, confinementcentre, confinementcentrekl, asmrvideo, asmr, asmrkitchen, 月子中心, 沉浸式, 沉浸式厨房, 月子餐, 月子餐外卖, 坐月子, 坐月子餐外送, 厨房, kitchen", "bait": false, "type": "Video", "likes": 41, "comments": 2, "er": 0.2, "followers": 21590, "date": "2026-10-28", "url": "https://www.instagram.com/p/DfCKx1JDc-L/", "video": true, "ratio": 0, "score": 0.22, "status": "未处理", "x": 7.3}, {"id": "DdnMY1IHfI_", "tracker": "confinement care 竞对", "competitor": "lycmotherchild", "caption": "Here’s a little recap of our Orientation & Parenting Workshop held last Saturday at our TTDI Centre! 💕\n\nA big thank you to all the wonderful parents who joined us and made the session so meaningful.\n\n We hope you found the orientation helpful and gained some useful knowledge and tips that you can bring home . 🥰\n\nWe’re so happy to be part of your parenting journey! ❤️\n\n#confinement #confinementcare #ConfinementCentre #月子 #月子中心 #坐月子 #新手媽媽 #月子中心活動", "transcript": "Hey, can't you stay? Don't leave a fallen angel out here on her own Find a place where ever we land is when we turn into a home Can't you stay? Don't leave a fallen angel out here on her own Find a place where ever we land is when we turn into a home Thank you for watching!", "brk": "Hook类型: 身份共鸣\n结构: 活动高光花絮 → 父母积极互动 → 温馨服务总结\n为什么火: 展现专业暖心的服务社群氛围，极易建立准父母的信任感\n改编角度: 拍摄月子中心真实育儿工作坊，突出专业护理与新手爸妈的松弛感", "my": "「安心坐月子真的安心吗？」\n接下来的28天，不只是坐月子，更是妈妈身体非常重要的休养与恢复期。\n很多妈咪以为，只要在家里随便找个人帮忙煮饭，或者让家公家婆照顾，就能好好休息。\n其实不是这样的，老一辈不仅要煮给我们吃，还要照顾家里的小孩，其实真的很累。\n来到实兆远月子中心，我们希望妈妈可以放心把自己交给我们。\n第一，老板娘温姐亲自住在中心里面，随时可以照顾到妈咪和先生的需要。\n第二，这里有24小时的护士团队三班轮流照顾，不管是涨奶需要及时疏通，还是半夜需要人帮忙，都不会觉得无助，可以安心睡觉。\n第三，如果有需要的话，我们还提供载送服务，先生在新加坡做工不在身边时，可以载妈咪和宝宝去KK检查。\n就像二宝妈妈Ruby说的，她一个人回来坐月子，最满意的就是有24小时的护士姐姐照顾baby，让她可以好好休息、恢复身体，想念宝宝时发一通讯息就会送过来。\n以前在家里坐月子，不仅自己手忙脚乱，还要担心长辈太辛苦。\n现在来到这里，每天有护士用心照顾，还有一天5餐的月子餐，整个人轻松很多。\n其实我们很欢迎妈咪和先生亲自过来参观，看看房间、宝宝护理环境，也可以认识我们的护士团队。\n我本人也住在中心里，可以亲自为你介绍哦！\n有什么想进一步了解的呢？", "tags": "confinement, confinementcare, ConfinementCentre, 月子, 月子中心, 坐月子, 新手媽媽, 月子中心活動", "bait": false, "type": "Video", "likes": -1, "comments": 2, "er": 0.0, "followers": 21590, "date": "2026-09-23", "url": "https://www.instagram.com/p/DdnMY1IHfI_/", "video": true, "ratio": 0, "score": 0.03, "status": "未处理", "x": 1.0}, {"id": "Dejl100iZh_", "tracker": "confinement care 竞对", "competitor": "lycmotherchild", "caption": "A heartfelt thank you to Mommy Jun Hoong @cheongjunhoong  for sharing her wonderful experience with LYC Mother & Child!\n\nAt LYC, we believe every mommy deserves to be cared for, supported, and well-rested while creating beautiful memories with her little one. 👶🏻💗\n\n Thank you to every mommy for trusting us to care for you and your little one during this special chapter of life. ✨\n\n#坐月子 #坐月子首選 #月子中心 #月子中心推荐 #月子中心kl #confinement #confinementcentre #confinementcentrekl #confinementcentrejb #confinementcentrepj #新手媽媽 #newborn #新生兒", "transcript": "大家好 我是張俊宏是透過網上還有其實就是有朋友之前是在大陸戲作業者的所以他也是有介紹這個地方的我也是後來也是有過來了解看看這個這邊的環境啊情況是怎麼樣那是因為方面我覺得演藝滿不錯的主要就是可以找出寶寶讓我去看她的演藝然後我去看她的演藝然後我也是覺得可以找出寶寶讓媽媽可以說一個安文教吧我個人感覺他們都很親切也很有好然後也是會時刻的就是每次把寶寶推過來都會跟我說一下寶寶的情況怎麼樣每一天不管是早上中午或是晚上就忽視都很配合去就是去撐那個撐那個黃桿的那個指數其實也是有朋友問我我就覺得夠啊可能剛生完的那第一次其實不要能吃了後面就是其實看到那個餐的話其實真的是很夠的了對於一個人來說是剛剛老師一個人的分量對於要做月子中心的父母其實我覺得在月子中心有過濾的東西不用太多至少睡眠是真的是可以隨時隨地的可以入睡這樣子所以對我而言就是休息真的是很重要所以其實我覺得住進月子中心就是還算是真的是很不錯的一個選擇因為如果是在家的話可能故意就會多了一點", "brk": "Hook类型: 身份共鸣\n结构: 名人背书 → 真实体验分享 → 总结推荐\n为什么火: 利用知名运动员真实入住口碑，增强信任感。\n改编角度: 邀请本地知名KOL或真实宝妈出镜，分享月子期间如何实现睡眠自由与科学调理。", "my": "「安心坐月子真的安心吗？」\n\n很多妈咪觉得，只要随便找个人帮忙，或者自己在家里随便吃点补品，把这几天熬过去就行了。\n\n其实并不是这样，接下来的28天，不只是\"坐月子\"，更是妈妈身体非常重要的休养与恢复期。\n\n如果你总是担心宝宝没人照顾，其实可以试试让护士来帮忙，这样你就能真正静下心来休息。\n\n第二招是遇到涨奶的时候，不需要自己在那边忍痛或者乱按，护士三班都在，涨奶能及时疏通，我就没那么无助，很安心。\n\n第三招是月子中心的饮食和照顾，每天都有人把热腾腾的饭菜准备好，不管是白天还是半夜，都有护士团队用心照顾妈妈的饮食与需要，不用自己去烦恼这些琐事。\n\nRuby分享说，她选择来月子中心的其中一个原因，是不选择让家婆、家公这么累，而且这里的护士姐姐是三班轮班的，她可以好好休息，也不需要烦恼baby要自己照顾。\n\n以前在家里坐月子的时候，不仅要自己操心宝宝，还要担心长辈太累，整个人常常觉得很无助又很累。\n\n来到实兆远月子中心以后，有老板娘亲自在中心，24小时护士团队用心照顾妈妈的饮食与需要，让二宝妈妈能够真正好好休息、恢复身体。\n\n其实我们很欢迎妈咪和先生亲自过来参观，看看房间、宝宝护理环境，也可以认识我们的护士团队。\n\n我本人也住在中心里，可以亲自为你介绍哦！", "tags": "坐月子, 坐月子首選, 月子中心, 月子中心推荐, 月子中心kl, confinement, confinementcentre, confinementcentrekl, confinementcentrejb, confinementcentrepj, 新手媽媽, newborn, 新生兒", "bait": false, "type": "Video", "likes": -1, "comments": 1, "er": 0.0, "followers": 21590, "date": "2026-10-16", "url": "https://www.instagram.com/p/Dejl100iZh_/", "video": true, "ratio": 0, "score": 0.01, "status": "未处理", "x": 0.3}]</script>
+<script>
+const DATA = JSON.parse(document.getElementById('data').textContent);
+const SUPA = 'https://lyzgyrvkmwuxhcavppzi.supabase.co';
+const ANON = 'sb_publishable_cKBAwIPBGNH8Bf39pCASJw_UfEdw2aV';
+const STATUSES = ["未处理", "拍摄中", "已处理", "跳过"];
+document.getElementById('updated').textContent = '更新于 2026-11-13 11:39 (GMT+8)';
+const PAGE = 48;
+let shown = PAGE;
+let videoOnly = false;
+let curTab = '全部';
+
+const $ = id => document.getElementById(id);
+const fmt = n => n >= 1e6 ? (n/1e6).toFixed(1)+'M' : n >= 1e3 ? (n/1e3).toFixed(1)+'K' : String(n);
+const getKey = () => ANON;  // anon key is baked in — safe, can only change status
+const I = n => '<svg class="ic"><use href="#i-' + n + '"/></svg>';
+const esc = s => String(s).replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
+const byRec = {}; DATA.forEach(d => byRec[d.id] = d);
+const TRENDS = [];
+DATA.forEach(d => {
+  d.days = d.date ? Math.max(0, Math.floor((Date.now() - new Date(d.date + 'T00:00:00')) / 864e5)) : null;
+  d.horse = d.followers > 0 && d.followers < 50000 && ((d.x || 0) >= 2 || d.score >= 10);
+});
+const PRESETS = [
+  { k: 'px', icon: 'trend', label: '真爆款 ×2+', f: d => (d.x || 0) >= 2 },
+  { k: 'pn', icon: 'star', label: '近7天', f: d => d.days !== null && d.days <= 7 },
+  { k: 'ph', icon: 'zap', label: '黑马', f: d => d.horse },
+  { k: 'pb', icon: 'magnet', label: '引流帖', f: d => d.bait },
+];
+const presetOn = {};
+
+function toast(msg, ok) {
+  const t = $('toast'); t.textContent = msg; t.classList.add('show');
+  t.style.borderColor = ok ? 'var(--green)' : 'var(--red)';
+  clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove('show'), 2600);
+}
+
+// filters
+const comps = [...new Set(DATA.map(d => d.competitor))].sort();
+comps.forEach(c => { const o = document.createElement('option'); o.value = c; o.textContent = '@'+c; $('fComp').appendChild(o); });
+[...new Set(DATA.map(d => d.tracker))].forEach(t => { const o = document.createElement('option'); o.value = t; o.textContent = t; $('fTracker').appendChild(o); });
+
+function matchQ(d) {
+  const q = ($('fSearch').value || '').trim().toLowerCase();
+  return !q || (d.caption + ' ' + (d.tags || '') + ' ' + (d.transcript || '') + ' ' + (d.brk || '') + ' ' + d.competitor).toLowerCase().includes(q);
+}
+
+function basePool() {
+  const t = $('fTracker').value, c = $('fComp').value;
+  return DATA.filter(d => (!t || d.tracker === t) && (!c || d.competitor === c) && (!videoOnly || d.video)
+    && matchQ(d) && PRESETS.every(p => !presetOn[p.k] || p.f(d)));
+}
+
+function filtered() {
+  const s = $('fSort').value;
+  let arr = basePool().filter(d => curTab === '全部' || d.status === curTab);
+  const key = { score:'score', er:'er', comments:'comments', likes:'likes', x:'x' }[s];
+  if (s === 'date') arr.sort((a,b) => (b.date||'').localeCompare(a.date||''));
+  else arr.sort((a,b) => (b[key]||0) - (a[key]||0));
+  return arr;
+}
+
+let dragRec = null;
+
+function renderTabs() {
+  const pool = basePool();
+  const counts = { '全部': pool.length };
+  STATUSES.forEach(s => counts[s] = pool.filter(d => d.status === s).length);
+  $('tabs').innerHTML = '';
+  ['全部', ...STATUSES].forEach(name => {
+    const el = document.createElement('div');
+    el.className = 'tab' + (curTab === name ? ' on' : '') + (name !== '全部' ? ' droppable' : '');
+    el.innerHTML = esc(name) + ' <span class="cnt">' + counts[name] + '</span>';
+    el.onclick = () => { curTab = name; shown = PAGE; render(); };
+    if (name !== '全部') {
+      el.ondragover = e => { if (dragRec) { e.preventDefault(); el.classList.add('over'); } };
+      el.ondragleave = () => el.classList.remove('over');
+      el.ondrop = e => {
+        e.preventDefault(); el.classList.remove('over');
+        const d = byRec[dragRec]; dragRec = null;
+        if (d && d.status !== name) setStatus(d, name);
+      };
+    }
+    $('tabs').appendChild(el);
+  });
+}
+
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      const el = e.target, pid = el.dataset.pid;
+      if (!el.querySelector('iframe')) {
+        const f = document.createElement('iframe');
+        f.src = 'https://www.instagram.com/p/' + pid + '/embed/';
+        f.loading = 'lazy'; f.allow = 'autoplay; encrypted-media';
+        el.appendChild(f);
+      }
+      io.unobserve(el);
+    }
+  });
+}, { rootMargin: '400px' });
+
+async function setStatus(d, val) {
+  try {
+    const r = await fetch(SUPA + '/rest/v1/posts?post_id=eq.' + encodeURIComponent(d.id), {
+      method: 'PATCH',
+      headers: { 'apikey': ANON, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+      body: JSON.stringify({ status: val })
+    });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    d.status = val;
+    cacheStatus(d.id, val);
+    toast('✓ @' + d.competitor + ' 已移到「' + val + '」', true);
+  } catch (e) {
+    toast('更新失败: ' + e.message + (String(e.message).includes('401') || String(e.message).includes('403') ? ' — 密钥无效?' : ''), false);
+  }
+  render();
+}
+
+function card(d, idx) {
+  const el = document.createElement('div');
+  el.className = 'card' + ((d.x || 0) >= 2 ? ' outlier' : '');
+  el.style.animationDelay = Math.min(idx % PAGE, 14) * 30 + 'ms';
+  el.draggable = true;
+  el.ondragstart = e => {
+    dragRec = d.id;
+    e.dataTransfer.effectAllowed = 'move';
+    el.classList.add('lifting');
+    document.body.classList.add('dragging');
+  };
+  el.ondragend = () => {
+    el.classList.remove('lifting');
+    document.body.classList.remove('dragging');
+    dragRec = null;
+  };
+  const typeIcon = d.video ? 'video' : (d.type === 'Carousel' ? 'layers' : 'image');
+  const days = d.days, horse = d.horse;
+  const ago = days === null ? '' : (days === 0 ? '今天' : days + '天前');
+  const lines = (d.caption || '').split('\n').map(l => l.trim()).filter(Boolean);
+  const hook = lines[0] || '';
+  const tr = (d.transcript && d.transcript !== '(转录失败)' && d.transcript !== '(无口播内容)') ? d.transcript : '';
+  el.innerHTML = `
+    <div class="embed" data-pid="${d.id}"><div class="ph"><svg class="ic"><use href="#i-${typeIcon}"/></svg></div></div>
+    <div class="meta">
+      <div class="row1">
+        <span class="handle" title="拖到上方 tab 即可归类">${I('grip')}</span>
+        <a class="who" href="https://www.instagram.com/${d.competitor}/" target="_blank">@${d.competitor}</a>
+        <span class="badge">${d.type || '-'}</span>
+        ${days !== null && days <= 7 ? '<span class="badge bnew">' + I('star') + '新帖</span>' : ''}
+        ${horse ? '<span class="badge bhorse">' + I('zap') + '黑马</span>' : ''}
+        ${d.bait ? '<span class="badge bbait" title="「留言XX」引流打法 — 评论被引流放大,漏斗设计值得学">' + I('magnet') + '引流</span>' : ''}
+        <span class="date" title="${d.date || ''}">${ago}</span>
+      </div>
+      <div class="nums">
+        <span class="num hot" title="Viral Score">${I('flame')}<b>${d.score}</b></span>
+        ${(d.x || 0) >= 2 ? '<span class="num x" title="是自家平均热度的多少倍">' + I('trend') + '<b>×' + d.x + '</b></span>' : ''}
+        <span class="num er" title="Engagement Rate">${I('pct')}<b>${d.er}%</b></span>
+        <span class="num" title="Likes">${I('heart')}<b>${d.likes > 0 ? fmt(d.likes) : '隐藏'}</b></span>
+        <span class="num" title="Comments">${I('msg')}<b>${fmt(d.comments)}</b></span>
+        <span class="num" title="Followers">${I('users')}<b>${fmt(d.followers)}</b></span>
+      </div>
+      <div class="cap" onclick="this.classList.toggle('open')"></div>
+      ${d.brk ? '<div class="ai" onclick="this.classList.toggle(&quot;open&quot;)"></div>' : ''}
+      ${d.my ? '<div class="mine" onclick="this.classList.toggle(&quot;open&quot;)"></div>' : ''}
+      <div class="srow"><label>状态</label><select class="status btn s${d.status}"></select>
+        <button class="abtn copy" title="复制完整文案">${I('copy')}文案</button>
+        ${tr ? '<button class="abtn mic" title="复制视频口播逐字稿">' + I('mic') + '口播</button>' : ''}
+        ${d.my ? '<button class="abtn minec" title="复制我的改写口播稿(可直接拍)">' + I('mic') + '我的稿</button>' : ''}
+        <button class="abtn brief" title="复制拍摄 Brief(数据+Hook+AI拆解+我的稿+口播稿+文案)">${I('clip')}Brief</button>
+        <a class="abtn" href="${d.url}" target="_blank" title="打开 Instagram 原帖">${I('ext')}</a></div>
+    </div>`;
+  const capEl = el.querySelector('.cap');
+  const restTxt = lines.slice(1).join('\n');
+  capEl.innerHTML = hook ? '<b>' + esc(hook) + '</b>' + (restTxt ? '<br>' + esc(restTxt).replace(/\n/g, '<br>') : '') : '';
+  const aiEl = el.querySelector('.ai');
+  if (aiEl) aiEl.innerHTML = '<b>💡 AI 拆解</b><br>' + esc(d.brk).split(String.fromCharCode(10)).join('<br>');
+  const myEl = el.querySelector('.mine');
+  if (myEl) myEl.innerHTML = '<b>🎬 我的版本(可直接拍)</b><br>' + esc(d.my).split(String.fromCharCode(10)).join('<br>');
+  const sel = el.querySelector('.status');
+  STATUSES.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = s; sel.appendChild(o); });
+  sel.value = d.status;
+  sel.onchange = () => setStatus(d, sel.value);
+  el.querySelector('.copy').onclick = () =>
+    navigator.clipboard.writeText(d.caption || '').then(() => toast('✓ 文案已复制', true));
+  const micBtn = el.querySelector('.mic');
+  if (micBtn) micBtn.onclick = () =>
+    navigator.clipboard.writeText(tr).then(() => toast('✓ 口播稿已复制', true));
+  const mineBtn = el.querySelector('.minec');
+  if (mineBtn) mineBtn.onclick = () =>
+    navigator.clipboard.writeText(d.my).then(() => toast('✓ 我的改写稿已复制', true));
+  el.querySelector('.brief').onclick = () => {
+    const NL = String.fromCharCode(10);
+    const parts = ['🎬 爆款参考 @' + d.competitor + ((d.x || 0) >= 2 ? '(自家平均 ×' + d.x + ')' : ''),
+      '📊 🔥' + d.score + ' | ER ' + d.er + '% | ❤️ ' + (d.likes > 0 ? fmt(d.likes) : '隐藏') +
+      ' | 💬 ' + fmt(d.comments) + ' | 👥 ' + fmt(d.followers) + (ago ? ' | ' + ago : ''),
+      '🔗 ' + d.url, '✍️ Hook: ' + hook];
+    if (d.brk) parts.push('——— AI 拆解 ———', d.brk);
+    if (d.my) parts.push('——— 我的版本(可直接拍)———', d.my);
+    if (tr) parts.push('——— 竞对原口播稿 ———', tr);
+    parts.push('——— 完整文案 ———', d.caption || '');
+    navigator.clipboard.writeText(parts.join(NL)).then(() => toast('✓ Brief 已复制,可直接发给拍摄/剪辑', true));
+  };
+  io.observe(el.querySelector('.embed'));
+  return el;
+}
+
+function render() {
+  renderTabs();
+  const arr = filtered();
+  const grid = $('grid'); grid.innerHTML = '';
+  arr.slice(0, shown).forEach((d, i) => grid.appendChild(card(d, i)));
+  $('empty').style.display = arr.length ? 'none' : '';
+  $('moreWrap').style.display = arr.length > shown ? '' : 'none';
+}
+
+
+function applyStatusCache() {
+  try {
+    const c = JSON.parse(localStorage.getItem('st_cache') || '{}');
+    Object.keys(c).forEach(rid => { const d = byRec[rid]; if (d) d.status = c[rid]; });
+  } catch (e) {}
+}
+
+function cacheStatus(rid, val) {
+  try {
+    const c = JSON.parse(localStorage.getItem('st_cache') || '{}');
+    c[rid] = val; localStorage.setItem('st_cache', JSON.stringify(c));
+  } catch (e) {}
+}
+
+// live status refresh (so weekly-baked page shows current statuses)
+async function refreshStatuses() {
+  applyStatusCache(); render();  // last-known statuses first
+  if (Date.now() - (+localStorage.getItem('st_ts') || 0) < 600000) return;  // 10-min throttle
+  localStorage.setItem('st_ts', String(Date.now()));
+  const fresh = {};
+  try {
+    const r = await fetch(SUPA + '/rest/v1/posts?select=post_id,status', { headers: { 'apikey': ANON } });
+    if (!r.ok) return;
+    (await r.json()).forEach(row => {
+      const d = byRec[row.post_id];
+      if (d) d.status = row.status || '未处理';
+      if (row.status && row.status !== '未处理') fresh[row.post_id] = row.status;
+    });
+    localStorage.setItem('st_cache', JSON.stringify(fresh));
+    render();
+  } catch (e) {}
+}
+
+['fTracker','fComp','fSort'].forEach(id => $(id).onchange = () => { shown = PAGE; render(); });
+$('fSearch').oninput = () => { shown = PAGE; render(); };
+$('fVideo').onclick = () => { videoOnly = !videoOnly; $('fVideo').classList.toggle('on', videoOnly); shown = PAGE; render(); };
+$('moreBtn').onclick = () => { shown += PAGE; render(); };
+
+// preset quick filters
+$('presets').innerHTML = '<span class="lbl">快筛</span>';
+PRESETS.forEach(p => {
+  const c = document.createElement('span'); c.className = 'chip2';
+  c.innerHTML = I(p.icon) + esc(p.label);
+  c.onclick = () => { presetOn[p.k] = !presetOn[p.k]; c.classList.toggle('on', presetOn[p.k]); shown = PAGE; render(); };
+  $('presets').appendChild(c);
+});
+
+// trending hashtags among outlier posts
+if (TRENDS.length) {
+  $('trends').innerHTML = '<span class="lbl">爆款热词</span>';
+  TRENDS.forEach(([tag, n]) => {
+    const c = document.createElement('span'); c.className = 'chip2';
+    c.textContent = '#' + tag + ' ' + n;
+    c.onclick = () => { $('fSearch').value = $('fSearch').value === tag ? '' : tag; shown = PAGE; render(); };
+    $('trends').appendChild(c);
+  });
+} else { $('trends').style.display = 'none'; }
+
+render();
+refreshStatuses();
+</script>
+</body>
+</html>
